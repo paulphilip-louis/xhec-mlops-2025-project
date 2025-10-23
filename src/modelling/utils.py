@@ -1,6 +1,8 @@
 import pickle as pkl
 import pandas as pd
 
+TRAINSET_PATH = "data/abalone.csv"
+
 
 def pickle_object(obj, filepath):
     """
