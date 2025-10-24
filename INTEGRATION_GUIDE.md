@@ -162,11 +162,11 @@ uvicorn src.web_service.main:app --port 8001 --reload
 
 ## 🎉 Résultat Final
 
-✅ **Pipeline ML** : Prefect + scikit-learn  
-✅ **API Backend** : FastAPI + Pydantic  
-✅ **Interface Frontend** : Streamlit  
-✅ **Tests** : pytest + couverture  
-✅ **Documentation** : Swagger + guides  
-✅ **Intégration** : Frontend ↔ Backend  
+✅ **Pipeline ML** : Prefect + scikit-learn
+✅ **API Backend** : FastAPI + Pydantic
+✅ **Interface Frontend** : Streamlit
+✅ **Tests** : pytest + couverture
+✅ **Documentation** : Swagger + guides
+✅ **Intégration** : Frontend ↔ Backend
 
 **L'application MLOps est maintenant complète et fonctionnelle !** 🚀

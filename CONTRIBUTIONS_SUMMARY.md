@@ -137,7 +137,7 @@ streamlit run streamlit_app.py
 **L'étudiant a livré un travail de qualité professionnelle :**
 
 - 🎨 **Interface Streamlit** moderne et complète
-- 🧪 **Tests unitaires** robustes et complets  
+- 🧪 **Tests unitaires** robustes et complets
 - 🔧 **Intégration** réussie avec l'API du collègue
 - 📚 **Documentation** claire et détaillée
 - ✅ **CI/CD** compatible et fonctionnel
