@@ -298,7 +298,7 @@ python deploy_prefect.py
 open http://localhost:4200
 ```
 
-**Schedule**: Daily at 2 AM UTC  
+**Schedule**: Daily at 2 AM UTC
 **Tags**: mlops, training, abalone, production
 
 #### Manual Training
@@ -434,11 +434,11 @@ docker compose down --rmi all
 
 ### 🎯 Success Criteria
 
-✅ **All services running** and healthy  
-✅ **API responding** to prediction requests  
-✅ **Streamlit interface** functional  
-✅ **Prefect workflows** executing  
-✅ **MLflow tracking** model experiments  
+✅ **All services running** and healthy
+✅ **API responding** to prediction requests
+✅ **Streamlit interface** functional
+✅ **Prefect workflows** executing
+✅ **MLflow tracking** model experiments
 ✅ **Docker containers** properly orchestrated
 
 ## 💡 Development Tips
