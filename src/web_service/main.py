@@ -42,8 +42,7 @@ def get_model():
             _model_cache = load_model()
         except FileNotFoundError as e:
             raise HTTPException(
-                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail=str(e)
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(e)
             )
     return _model_cache
 
@@ -213,14 +212,14 @@ async def home():
                 <h1>🦪 Abalone Age Prediction API</h1>
                 <p>Machine Learning API for predicting abalone age based on physical measurements</p>
             </div>
-            
+
             <div class="content">
                 <div class="section">
                     <h2>📚 About</h2>
                     <p>
                         This API provides machine learning predictions for abalone age based on physical characteristics.
                         The model uses a Random Forest Regressor trained on the classic UCI Abalone dataset.
-                        The age of abalone is determined by the number of rings through microscopic examination, 
+                        The age of abalone is determined by the number of rings through microscopic examination,
                         and this API predicts it using non-invasive physical measurements.
                     </p>
                 </div>
@@ -236,7 +235,7 @@ async def home():
 
                 <div class="section">
                     <h2>🔌 Available Endpoints</h2>
-                    
+
                     <div class="endpoint">
                         <span class="method get">GET</span>
                         <strong>/</strong>
@@ -330,7 +329,7 @@ async def home():
 
                 <div class="section">
                     <h2>💻 Example Usage</h2>
-                    
+
                     <h3>Single Prediction (cURL)</h3>
                     <div class="code">curl -X POST "http://localhost:8000/predict" \\
   -H "Content-Type: application/json" \\
@@ -413,24 +412,24 @@ async def health_check():
         model_loaded = model is not None
     except HTTPException:
         pass
-    
+
     return HealthResponse(
         status="healthy" if model_loaded else "degraded",
         model_loaded=model_loaded,
-        version=config.app_version
+        version=config.app_version,
     )
 
 
 @app.post("/predict", response_model=PredictionResponse, tags=["Prediction"])
 async def predict(features: AbaloneFeatures):
     """Predict the age of an abalone based on physical measurements.
-    
+
     The model predicts the number of rings, which can be used to estimate age.
     Age = Rings + 1.5 years
-    
+
     Args:
         features: Physical measurements of the abalone
-        
+
     Returns:
         Predicted number of rings and estimated age
     """
@@ -441,53 +440,50 @@ async def predict(features: AbaloneFeatures):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Prediction failed: {str(e)}"
+            detail=f"Prediction failed: {str(e)}",
         )
 
 
 @app.post("/predict/batch", response_model=BatchPredictionResponse, tags=["Prediction"])
 async def predict_batch(request: BatchPredictionRequest):
     """Predict the age of multiple abalones in a single request.
-    
+
     This endpoint is more efficient for processing multiple samples as it loads
     the model once and reuses it for all predictions.
-    
+
     Args:
         request: Batch request containing multiple abalone samples
-        
+
     Returns:
         List of predictions for each sample
     """
     try:
         model = get_model()
         predictions = run_batch_inference(request.samples, model=model)
-        return BatchPredictionResponse(
-            predictions=predictions,
-            count=len(predictions)
-        )
+        return BatchPredictionResponse(predictions=predictions, count=len(predictions))
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Batch prediction failed: {str(e)}"
+            detail=f"Batch prediction failed: {str(e)}",
         )
 
 
 @app.post("/train", response_model=TrainingResponse, tags=["Training"])
 async def train_model(request: TrainingRequest = TrainingRequest()):
     """Train a new Random Forest model with the specified hyperparameters.
-    
+
     This endpoint triggers the training pipeline which:
     1. Loads the data from the configured data path
     2. Preprocesses the data (encodes categorical features, splits into train/test)
     3. Trains a Random Forest Regressor with the provided hyperparameters
     4. Saves the trained model to disk
-    
+
     After training, the model cache is cleared and the new model will be used
     for subsequent predictions.
-    
+
     Args:
         request: Training configuration with hyperparameters
-        
+
     Returns:
         Training status and model information
     """
@@ -497,15 +493,15 @@ async def train_model(request: TrainingRequest = TrainingRequest()):
         import pickle as pkl
         import os
         from .preprocessing import prepare_training_data
-        
+
         # Load and preprocess data using unified preprocessing
         X, y, encoder = prepare_training_data(config.data_path)
-        
+
         # Split data
         X_train, X_test, y_train, y_test = train_test_split(
             X, y, test_size=0.2, random_state=42
         )
-        
+
         # Train model with custom parameters
         rf = RandomForestRegressor(
             n_estimators=request.n_estimators,
@@ -515,31 +511,31 @@ async def train_model(request: TrainingRequest = TrainingRequest()):
             random_state=request.random_state,
             n_jobs=-1,
         )
-        
+
         rf.fit(X_train, y_train)
-        
+
         # Save model
         model_path = config.model_path
         os.makedirs(model_path.parent, exist_ok=True)
         with open(model_path, "wb") as f:
             pkl.dump(rf, f)
-        
+
         # Clear model cache to load the newly trained model
         clear_model_cache()
-        
+
         return TrainingResponse(
             message="Model trained successfully",
             model_path=str(config.model_path),
-            training_samples=len(X_train)
+            training_samples=len(X_train),
         )
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Training failed: {str(e)}"
+            detail=f"Training failed: {str(e)}",
         )
 
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
 
+    uvicorn.run(app, host="0.0.0.0", port=8000)
