@@ -1,2 +1,7 @@
-# TODO - complete with dev requirements (black, flake8, ruff, etc...)
+# Development requirements
+black>=23.0.0
+flake8>=6.0.0
+ruff>=0.1.0
+pytest>=7.0.0
+pytest-cov>=4.0.0
 # Then, execute "pip-compile requirements-dev.in" to generate the file requirements-dev.txt

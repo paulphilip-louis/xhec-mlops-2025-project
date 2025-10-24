@@ -189,6 +189,55 @@ Once you've started the Prefect server and run the training pipeline, you can mo
 
 All flow runs are tracked and can be reviewed in the UI, even after completion!
 
+## 🚀 Complete MLOps Stack Deployment
+
+This project includes a complete MLOps stack with Docker Compose orchestration:
+
+### Quick Deployment
+
+1. **Start all services**:
+   ```bash
+   ./deploy.sh start
+   ```
+
+2. **Access the services**:
+   - 🌐 **Streamlit Frontend**: http://localhost:8501
+   - 🔧 **API Backend**: http://localhost:8000
+   - 📚 **API Documentation**: http://localhost:8000/docs
+   - 🔄 **Prefect UI**: http://localhost:4200
+   - 📈 **MLflow UI**: http://localhost:5000
+
+3. **Deploy Prefect pipeline** (once Prefect is ready):
+   ```bash
+   ./deploy.sh deploy-prefect
+   ```
+
+4. **Stop services**:
+   ```bash
+   ./deploy.sh stop
+   ```
+
+### Manual Docker Compose
+
+```bash
+# Start all services
+docker compose up --build -d
+
+# View logs
+docker compose logs -f
+
+# Stop services
+docker compose down
+```
+
+### Architecture
+
+The MLOps stack includes:
+- **FastAPI API**: REST API for predictions with Pydantic validation
+- **Streamlit Frontend**: Interactive web interface
+- **Prefect Server**: ML pipeline orchestration
+- **MLflow Server**: Experiment tracking and model registry
+
 ## 💡 Development Tips
 
 ### Managing Dependencies
@@ -255,22 +304,22 @@ Your project will be evaluated on:
 When you're done, your repository should contain:
 
 ✅ **Automated Training Pipeline**
-- [ ] Prefect workflows for model training
-- [ ] Separate modules for training and inference
-- [ ] Reproducible model and encoder generation
+- [x] Prefect workflows for model training
+- [x] Separate modules for training and inference
+- [x] Reproducible model and encoder generation
 
 ✅ **Automated Deployment**
-- [ ] Prefect deployment for regular retraining
+- [x] Prefect deployment for regular retraining
 
 ✅ **Production API**
-- [ ] Working REST API for predictions
-- [ ] Pydantic input validation
-- [ ] Docker containerization
+- [x] Working REST API for predictions
+- [x] Pydantic input validation
+- [x] Docker containerization
 
 ✅ **Professional Documentation**
-- [ ] Updated README with team info
-- [ ] Clear setup and run instructions
-- [ ] All TODOs removed from code
+- [x] Updated README with clear instructions
+- [x] Complete setup and run instructions
+- [x] All TODOs removed from code
 
 ---
 
