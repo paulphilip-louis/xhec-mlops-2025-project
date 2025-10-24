@@ -4,11 +4,6 @@ from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import HTMLResponse
 from pathlib import Path
 import sys
-
-# Add the project root to the path to enable imports
-project_root = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(project_root))
-
 from src.web_service.app_config import config
 from src.web_service.schemas import (
     AbaloneFeatures,
@@ -21,6 +16,9 @@ from src.web_service.schemas import (
 )
 from src.web_service.inference import run_inference, run_batch_inference, load_model
 
+# Add the project root to the path to enable imports
+project_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(project_root))
 
 # Initialize FastAPI app
 app = FastAPI(

@@ -7,12 +7,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 import pickle as pkl
 import os
+from src.web_service.preprocessing import prepare_training_data
 
 # Add the project root to the path to enable imports
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
-from src.web_service.preprocessing import prepare_training_data
 
 def main():
     # Use same paths as API
@@ -24,7 +24,7 @@ def main():
     # Load and preprocess data using the SAME function as the API
     X, y, encoder = prepare_training_data(data_path)
     
-    print(f"Loaded and preprocessed data:")
+    print("Loaded and preprocessed data:")
     print(f"  Total samples: {len(X)}")
     print(f"  Feature columns: {list(X.columns)}")
     print(f"  Target range: {y.min():.1f} - {y.max():.1f} rings")
@@ -66,7 +66,7 @@ def main():
     # Test the model with a sample
     sample_prediction = rf.predict(X_test.iloc[0:1])
     actual_value = y_test.iloc[0]
-    print(f"🧪 Sample test:")
+    print("🧪 Sample test:")
     print(f"  Predicted: {sample_prediction[0]:.2f} rings ({sample_prediction[0] + 1.5:.2f} years)")
     print(f"  Actual: {actual_value:.0f} rings ({actual_value + 1.5:.1f} years)")
     

@@ -20,7 +20,7 @@ st.set_page_config(
 )
 
 # Configuration de l'API
-API_BASE_URL = "http://localhost:8000"  # URL de l'API FastAPI
+API_BASE_URL = "http://localhost:8001"  # URL de l'API FastAPI
 PREDICT_ENDPOINT = f"{API_BASE_URL}/predict"
 HEALTH_ENDPOINT = f"{API_BASE_URL}/"
 
@@ -85,7 +85,7 @@ def main():
 
     if not api_healthy:
         st.error(
-            "❌ L'API FastAPI n'est pas accessible. Assurez-vous qu'elle est démarrée sur http://localhost:8000"
+            "❌ L'API FastAPI n'est pas accessible. Assurez-vous qu'elle est démarrée sur http://localhost:8001"
         )
         st.stop()
     else:

@@ -7,7 +7,6 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 import pickle as pkl
 from pathlib import Path
-from .app_config import config
 
 
 def preprocess_data(df: pd.DataFrame, fit_encoder: bool = False, encoder_path: Path = None) -> tuple:

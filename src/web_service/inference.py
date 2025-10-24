@@ -2,7 +2,6 @@
 
 import pickle as pkl
 import pandas as pd
-import numpy as np
 from pathlib import Path
 from .app_config import config
 from .schemas import AbaloneFeatures, PredictionResponse

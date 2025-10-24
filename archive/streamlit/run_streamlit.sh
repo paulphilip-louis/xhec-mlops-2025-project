@@ -20,8 +20,8 @@ fi
 
 # Vérifier si l'API FastAPI est accessible
 echo "🔍 Vérification de l'API FastAPI..."
-if curl -s http://localhost:8000/ > /dev/null; then
-    echo "✅ API FastAPI accessible sur http://localhost:8000"
+if curl -s http://localhost:8001/ > /dev/null; then
+    echo "✅ API FastAPI accessible sur http://localhost:8001"
 else
     echo "⚠️  API FastAPI non accessible. Assurez-vous qu'elle est démarrée."
     echo "   Vous pouvez la démarrer avec: uvicorn src.web_service.main:app --reload"
