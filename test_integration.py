@@ -13,9 +13,9 @@ def test_api_health(api_url: str = "http://localhost:8000") -> bool:
         response = requests.get(f"{api_url}/health", timeout=5)
         if response.status_code == 200:
             data = response.json()
-            print("✅ API Health:", data['status'])
-            print("   Model loaded:", data['model_loaded'])
-            print("   Version:", data['version'])
+            print("✅ API Health:", data["status"])
+            print("   Model loaded:", data["model_loaded"])
+            print("   Version:", data["version"])
             return True
         else:
             print("❌ API Health: Status", response.status_code)
@@ -35,7 +35,7 @@ def test_api_prediction(api_url: str = "http://localhost:8000") -> bool:
         "whole_weight": 0.514,
         "shucked_weight": 0.2245,
         "viscera_weight": 0.101,
-        "shell_weight": 0.15
+        "shell_weight": 0.15,
     }
 
     try:
@@ -43,8 +43,8 @@ def test_api_prediction(api_url: str = "http://localhost:8000") -> bool:
         if response.status_code == 200:
             data = response.json()
             print("✅ API Prediction: Success")
-            print("   Predicted rings:", data.get('predicted_rings', 'N/A'))
-            print("   Predicted age:", data.get('predicted_age', 'N/A'))
+            print("   Predicted rings:", data.get("predicted_rings", "N/A"))
+            print("   Predicted age:", data.get("predicted_age", "N/A"))
             return True
         else:
             print("❌ API Prediction: Status", response.status_code)
@@ -111,4 +111,3 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-
