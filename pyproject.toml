@@ -25,6 +25,7 @@ dependencies = [
   "pyarrow>=21.0.0",
   "loguru>=0.7.3",
   "prefect>=2.14.0",
+  "nbstripout>=0.7.1",
 ]
 
 [project.optional-dependencies]
