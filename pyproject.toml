@@ -30,6 +30,7 @@ dependencies = [
   "requests>=2.31.0",
   "fastapi>=0.103.0",
   "uvicorn>=0.23.0",
+  "nbstripout>=0.7.1",
 ]
 
 [project.optional-dependencies]
