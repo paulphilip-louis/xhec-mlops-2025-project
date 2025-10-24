@@ -54,7 +54,15 @@ python test_api_client.py
 docker build -f Dockerfile.app -t abalone-api .
 
 # Run the container with specified port binding
-docker run -p 0.0.0.0:8000:8001 -p 0.0.0.0:4200:4201 abalone-api
+docker run -p 8000:8000 -p 5000:5000 abalone-api
+
+# 3. Access API at http://localhost:8001/
+
+# 4. When done, to stop the container
+docker stop abalone-api-test
+
+# 5. To delete it
+docker rm abalone-api-test
 ```
 
 ## 🔌 API Endpoints

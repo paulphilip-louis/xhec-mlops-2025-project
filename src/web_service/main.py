@@ -4,6 +4,7 @@ from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import HTMLResponse
 from pathlib import Path
 import sys
+import logging
 from src.web_service.app_config import config
 from src.web_service.schemas import (
     AbaloneFeatures,
@@ -15,10 +16,18 @@ from src.web_service.schemas import (
     HealthResponse,
 )
 from src.web_service.inference import run_inference, run_batch_inference, load_model
+from src.web_service.mlflow_utils import setup_mlflow, log_prediction, log_training_run
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Add the project root to the path to enable imports
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
+
+# Initialize MLFlow
+setup_mlflow()
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -436,6 +445,17 @@ async def predict(features: AbaloneFeatures):
     try:
         model = get_model()
         prediction = run_inference(features, model=model)
+        
+        # Log prediction to MLFlow
+        try:
+            input_features = features.model_dump()
+            log_prediction(
+                input_features=input_features,
+                prediction=prediction.predicted_rings
+            )
+        except Exception as mlflow_error:
+            logger.warning(f"Failed to log prediction to MLFlow: {mlflow_error}")
+        
         return prediction
     except Exception as e:
         raise HTTPException(
@@ -477,6 +497,7 @@ async def train_model(request: TrainingRequest = TrainingRequest()):
     2. Preprocesses the data (encodes categorical features, splits into train/test)
     3. Trains a Random Forest Regressor with the provided hyperparameters
     4. Saves the trained model to disk
+    5. Logs training metrics and model to MLFlow
 
     After training, the model cache is cleared and the new model will be used
     for subsequent predictions.
@@ -490,6 +511,7 @@ async def train_model(request: TrainingRequest = TrainingRequest()):
     try:
         from sklearn.model_selection import train_test_split
         from sklearn.ensemble import RandomForestRegressor
+        from sklearn.metrics import mean_squared_error, r2_score
         import pickle as pkl
         import os
         from .preprocessing import prepare_training_data
@@ -514,11 +536,51 @@ async def train_model(request: TrainingRequest = TrainingRequest()):
 
         rf.fit(X_train, y_train)
 
+        # Calculate metrics
+        train_predictions = rf.predict(X_train)
+        test_predictions = rf.predict(X_test)
+        
+        train_mse = mean_squared_error(y_train, train_predictions)
+        test_mse = mean_squared_error(y_test, test_predictions)
+        train_r2 = r2_score(y_train, train_predictions)
+        test_r2 = r2_score(y_test, test_predictions)
+
         # Save model
         model_path = config.model_path
         os.makedirs(model_path.parent, exist_ok=True)
         with open(model_path, "wb") as f:
             pkl.dump(rf, f)
+
+        # Log training to MLFlow
+        try:
+            hyperparameters = {
+                "n_estimators": request.n_estimators,
+                "max_depth": request.max_depth,
+                "min_samples_split": request.min_samples_split,
+                "min_samples_leaf": request.min_samples_leaf,
+                "random_state": request.random_state,
+            }
+            
+            metrics = {
+                "train_mse": train_mse,
+                "test_mse": test_mse,
+                "train_r2": train_r2,
+                "test_r2": test_r2,
+            }
+            
+            mlflow_run_id = log_training_run(
+                model=rf,
+                hyperparameters=hyperparameters,
+                metrics=metrics,
+                training_samples=len(X_train),
+                model_path=model_path
+            )
+            
+            if mlflow_run_id:
+                logger.info(f"Training logged to MLFlow with run ID: {mlflow_run_id}")
+                
+        except Exception as mlflow_error:
+            logger.warning(f"Failed to log training to MLFlow: {mlflow_error}")
 
         # Clear model cache to load the newly trained model
         clear_model_cache()

@@ -19,6 +19,12 @@ class AppConfig(BaseSettings):
     # Data paths
     data_path: Path = Path("data/abalone.csv")
 
+    # MLFlow configuration
+    mlflow_tracking_uri: str = "http://localhost:5000"
+    mlflow_experiment_name: str = "abalone_age_prediction"
+    mlflow_model_name: str = "abalone_model"
+    mlflow_enable_tracking: bool = True
+
     # Model parameters - these must match the training data column order exactly
     feature_columns: list = [
         "Sex_encoded",
