@@ -1,7 +1,9 @@
 import pickle as pkl
 import pandas as pd
+from prefect import task
 
 
+@task
 def pickle_object(obj, filepath):
     """
     Save a Python object to a file using pickle.
@@ -14,6 +16,7 @@ def pickle_object(obj, filepath):
         pkl.dump(obj, f)
 
 
+@task
 def load_data(datapath):
     df = pd.read_csv(datapath)
     return df

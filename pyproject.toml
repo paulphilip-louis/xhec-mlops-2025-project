@@ -24,6 +24,7 @@ dependencies = [
   "mlflow>=2.8.0",
   "pyarrow>=21.0.0",
   "loguru>=0.7.3",
+  "prefect>=2.14.0",
 ]
 
 [project.optional-dependencies]
