@@ -9,7 +9,7 @@ authors = [
   { name = "Felix Müller", email = "felixmueller0205@gmail.com" },
 ]
 description = "X-HEC MLOps Project on Abalone age prediction model"
-requires-python = ">=3.13"
+requires-python = ">=3.10"
 dependencies = [
   "pydantic>=2.0.0",
   "pre-commit>=3.0.0",
@@ -25,6 +25,11 @@ dependencies = [
   "pyarrow>=21.0.0",
   "loguru>=0.7.3",
   "prefect>=2.14.0",
+  "streamlit>=1.28.0",
+  "plotly>=5.15.0",
+  "requests>=2.31.0",
+  "fastapi>=0.103.0",
+  "uvicorn>=0.23.0",
   "nbstripout>=0.7.1",
 ]
 
