@@ -72,10 +72,12 @@ def main():
 
     # En-tête
     st.title("🐚 Prédiction de l'Âge des Abalones")
-    st.markdown("""
-    Cette application utilise un modèle de machine learning pour prédire l'âge d'une abalone 
+    st.markdown(
+        """
+    Cette application utilise un modèle de machine learning pour prédire l'âge d'une abalone
     (escargot de mer) en se basant sur ses caractéristiques physiques.
-    """)
+    """
+    )
 
     # Vérification de l'API
     with st.spinner("Vérification de la connexion à l'API..."):
