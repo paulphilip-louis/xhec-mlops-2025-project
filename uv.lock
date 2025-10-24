@@ -5027,7 +5027,6 @@ dependencies = [
     { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "numpy", version = "2.3.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "nbstripout" },
-    { name = "numpy" },
     { name = "pandas" },
     { name = "plotly" },
     { name = "pre-commit" },
