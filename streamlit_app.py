@@ -20,7 +20,7 @@ st.set_page_config(
 )
 
 # Configuration de l'API
-API_BASE_URL = "http://localhost:8001"  # URL de l'API FastAPI
+API_BASE_URL = "http://localhost:8000"  # URL de l'API FastAPI
 PREDICT_ENDPOINT = f"{API_BASE_URL}/predict"
 HEALTH_ENDPOINT = f"{API_BASE_URL}/"
 
@@ -259,7 +259,7 @@ def main():
 
         with col2:
             st.write("**Distribution de l'âge:**")
-            st.histogram(sample_data["Rings"], bins=20)
+            st.bar_chart(sample_data["Rings"].value_counts().sort_index())
 
         # Corrélations
         st.subheader("🔗 Corrélations")

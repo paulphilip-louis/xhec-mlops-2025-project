@@ -10,7 +10,7 @@ Ce guide explique comment utiliser l'application complète MLOps avec l'interfac
 ┌─────────────────┐    HTTP     ┌─────────────────┐    ML     ┌─────────────────┐
 │   Streamlit     │ ──────────► │   FastAPI       │ ────────► │   ML Pipeline   │
 │   Frontend      │             │   Backend       │           │   (Prefect)     │
-│   Port: 8501    │             │   Port: 8001    │           │                 │
+│   Port: 8501    │             │   Port: 8000    │           │                 │
 └─────────────────┘             └─────────────────┘           └─────────────────┘
 ```
 
@@ -20,7 +20,7 @@ Ce guide explique comment utiliser l'application complète MLOps avec l'interfac
 ```bash
 cd /home/alcyenna/xhec-mlops-2025-project
 source venv/bin/activate
-uvicorn src.web_service.main:app --host 0.0.0.0 --port 8001 --reload
+uvicorn src.web_service.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 ### 2. Démarrer Streamlit (nouveau terminal)
@@ -32,8 +32,8 @@ streamlit run streamlit_app.py
 
 ### 3. Accéder aux interfaces
 - 🌐 **Streamlit** : http://localhost:8501
-- 📚 **API Docs** : http://localhost:8001/docs
-- 🔍 **Health Check** : http://localhost:8001/
+- 📚 **API Docs** : http://localhost:8000/docs
+- 🔍 **Health Check** : http://localhost:8000/
 
 ## 🎯 Fonctionnalités
 
@@ -62,10 +62,10 @@ streamlit run streamlit_app.py
 ### Via API Directe
 ```bash
 # Test de santé
-curl -X GET http://localhost:8001/
+curl -X GET http://localhost:8000/
 
 # Prédiction
-curl -X POST http://localhost:8001/predict \
+curl -X POST http://localhost:8000/predict \
   -H "Content-Type: application/json" \
   -d '{
     "sex": "M",
@@ -82,13 +82,13 @@ curl -X POST http://localhost:8001/predict \
 ## 🔧 Configuration
 
 ### Variables d'environnement
-- `API_BASE_URL` : URL de base de l'API (défaut: http://localhost:8001)
+- `API_BASE_URL` : URL de base de l'API (défaut: http://localhost:8000)
 - `MODEL_PATH` : Chemin vers le modèle ML
 - `DATA_PATH` : Chemin vers les données d'entraînement
 
 ### Ports
 - **Streamlit** : 8501
-- **FastAPI** : 8001
+- **FastAPI** : 8000
 - **Prefect UI** : 4200 (si démarré)
 
 ## 🧪 Tests
@@ -108,10 +108,10 @@ python -m pytest test_streamlit.py tests/test_api.py -v
 ### Tests d'intégration
 ```bash
 # Démarrer l'API
-uvicorn src.web_service.main:app --port 8001 &
+uvicorn src.web_service.main:app --port 8000 &
 
 # Tester la connexion
-curl -X GET http://localhost:8001/
+curl -X GET http://localhost:8000/
 
 # Démarrer Streamlit
 streamlit run streamlit_app.py
@@ -132,14 +132,14 @@ L'intégration Docker complète sera ajoutée dans la prochaine étape :
 #### API non accessible
 ```bash
 # Vérifier que l'API est démarrée
-curl -X GET http://localhost:8001/
+curl -X GET http://localhost:8000/
 
 # Vérifier les logs
-uvicorn src.web_service.main:app --port 8001 --reload
+uvicorn src.web_service.main:app --port 8000 --reload
 ```
 
 #### Erreurs de connexion Streamlit
-- Vérifiez que l'API est démarrée sur le port 8001
+- Vérifiez que l'API est démarrée sur le port 8000
 - Vérifiez l'URL dans `streamlit_app.py`
 - Consultez les logs Streamlit
 
